@@ -448,25 +448,10 @@ try:
                             )
                             via = "Resend" if backend == "resend" else "Gmail"
                             st.success(f"✅ Report sent to **{recipient}** via {via} — PDF + PowerPoint attached!")
-                        except ValueError as cfg_err:
-                            st.warning("Email not configured yet.")
-                            st.info(
-                                "**Fastest option — Resend (free, proper no-reply):**\n\n"
-                                "1. Sign up free at [resend.com](https://resend.com)\n"
-                                "2. Go to **API Keys → Create API Key**\n"
-                                "3. Open `.streamlit/secrets.toml` and add:\n\n"
-                                "```toml\n"
-                                'RESEND_API_KEY = "re_xxxxxxxxxxxx"\n'
-                                "```\n\n"
-                                "Sender will appear as **ReportAI** — no personal email needed."
-                            )
+                        except ValueError:
+                            st.error("Email sending not configured. Add credentials to secrets.")
                         except Exception as mail_err:
-                            err_str = str(mail_err)
-                            if "535" in err_str or "BadCredentials" in err_str:
-                                st.error("❌ Gmail App Password is wrong.")
-                                st.info("Get a correct App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)")
-                            else:
-                                st.error(f"Send failed: {mail_err}")
+                            st.error(f"Send failed: {mail_err}")
 
 except Exception as exc:
     st.error(f"Something went wrong: {exc}")
