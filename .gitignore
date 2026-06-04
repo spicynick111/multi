@@ -1,0 +1,23 @@
+# Secrets — never commit
+.streamlit/secrets.toml
+
+# Generated outputs
+outputs/charts/*.png
+outputs/reports/*.pdf
+outputs/presentations/*.pptx
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Env
+.env
+.venv
+venv/
+
+# OS
+.DS_Store
+Thumbs.db

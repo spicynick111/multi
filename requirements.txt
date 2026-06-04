@@ -1,0 +1,28 @@
+# Core orchestration
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+
+# LLM — Google Gemini 2.0 Flash (free tier, no credit card)
+google-genai>=1.0.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+openpyxl>=3.1.0
+
+# Visualisation
+plotly>=5.18.0
+kaleido>=0.2.1
+
+# Report generation
+fpdf2>=2.7.0
+python-pptx>=0.6.23
+
+# Email
+resend>=0.7.0
+
+# UI
+streamlit>=1.38.0
