@@ -171,30 +171,14 @@ with st.sidebar:
     st.divider()
     st.markdown("## ⚙️ Configuration")
 
-    # Prefer key from Streamlit secrets (deployment) → env var → user input
-    _secret_key = st.secrets.get("GEMINI_API_KEY", "") if hasattr(st, "secrets") else ""
-    _env_key = os.getenv("GEMINI_API_KEY", "")
-    _preset_key = _secret_key or _env_key
-
+    # Load Gemini key silently from secrets or env — users never see this
+    _FAKE = {"your-gemini-api-key-here", "", "your-key-here"}
+    _secret_key = (st.secrets.get("GEMINI_API_KEY", "") if hasattr(st, "secrets") else "")
+    _env_key    = os.getenv("GEMINI_API_KEY", "")
+    _preset_key = ("" if _secret_key in _FAKE else _secret_key) or \
+                  ("" if _env_key    in _FAKE else _env_key)
     if _preset_key:
         os.environ["GEMINI_API_KEY"] = _preset_key
-        st.success("Gemini API key loaded ✓", icon="🔑")
-    else:
-        user_key = st.text_input(
-            "Gemini API Key",
-            type="password",
-            placeholder="AIza...",
-            help="Free key at aistudio.google.com — takes 2 minutes",
-        )
-        if user_key:
-            os.environ["GEMINI_API_KEY"] = user_key
-            st.success("Key set ✓", icon="🔑")
-        else:
-            st.info(
-                "Get a **free** Gemini key at [aistudio.google.com](https://aistudio.google.com).  \n"
-                "Without a key the report still works — AI narrative will use smart fallbacks.",
-                icon="ℹ️",
-            )
 
     st.divider()
 
