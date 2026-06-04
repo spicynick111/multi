@@ -1,82 +1,193 @@
-# Autonomous Business Report Generator
+# 📊 Autonomous Business Report Generator
 
-Multi-agent LangGraph pipeline that turns any CSV into a full analyst report — PDF + PowerPoint + stakeholder email — in under 2 minutes. 100% free, no paid API.
+> Upload any CSV → 7 AI agents analyse it → Get a full **PDF Report + PowerPoint Deck + Email Draft** in under 2 minutes.
 
-## Agent Pipeline
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
+![LangGraph](https://img.shields.io/badge/LangGraph-0.2+-1C3C3C?style=flat&logo=langchain&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.38+-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini_2.0_Flash-Free-4285F4?style=flat&logo=google&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat)
+
+---
+
+## What It Does
+
+Drop any CSV file into the app and a pipeline of **7 specialized AI agents** kicks in:
+
+| Step | Agent | What It Does |
+|------|-------|-------------|
+| 1 | **Data Validator** | Cleans data, handles missing values, detects column types |
+| 2 | **Analysis Planner** | Uses LLM to understand the dataset and plan analyses |
+| 3 | **Analysis Suite** | Runs Stats · Trend · Anomaly · Correlation in parallel |
+| 4 | **Visualization Agent** | Creates 5 Plotly charts (distributions, heatmap, trends, anomalies) |
+| 5 | **Insight Narrator** | Writes a 3-paragraph executive summary using Gemini |
+| 6 | **Recommendation Agent** | Generates 3 data-backed strategic action items |
+| 7 | **Report Compiler** | Assembles everything into PDF + PowerPoint + Email |
+
+### Output You Get
+- **PDF Report** — Cover page, stats tables, correlation table, anomaly analysis, all charts, recommendations
+- **PowerPoint Deck** — Title slide, 8 metric cards, stats table, correlation bars, chart slides, recommendation cards, thank-you slide
+- **Email Draft** — Ready-to-send stakeholder update with key findings
+- **Send to Email** — Type any email address → PDF + PPTX land in inbox instantly
+
+---
+
+## Demo
+
+| Light Mode | Dark Mode |
+|-----------|----------|
+| Upload CSV → Watch 7 agents run live | Toggle 🌙 in sidebar |
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Orchestration | [LangGraph](https://github.com/langchain-ai/langgraph) |
+| LLM | Gemini 2.0 Flash via `google-genai` |
+| Data Analysis | Pandas · SciPy · scikit-learn |
+| Visualisation | Plotly + Kaleido |
+| PDF Generation | fpdf2 |
+| PowerPoint | python-pptx |
+| Email | Resend API / Gmail SMTP |
+| UI | Streamlit |
+
+**Cost: $0** — Gemini 2.0 Flash free tier (1,500 req/day). No OpenAI. No paid APIs.
+
+---
+
+## Project Structure
 
 ```
-CSV Upload
-    │
-    ▼
-[1] Data Validator      → cleans data, detects column types
-    │
-    ▼
-[2] Analysis Planner    → decides which analyses to run (LLM)
-    │
-    ▼
-[3] Analysis Suite      → Stats · Trend · Anomaly · Correlation (parallel logic)
-    │
-    ▼
-[4] Visualization Agent → 5 Plotly charts saved as PNG
-    │
-    ▼
-[5] Insight Narrator    → executive summary in business language (LLM)
-    │
-    ▼
-[6] Recommendation Agent→ 3 strategic action items (LLM)
-    │
-    ▼
-[7] Report Compiler     → PDF + PowerPoint + Email draft
+business-report-agent/
+├── app.py                      ← Streamlit UI (dark mode, live pipeline)
+├── requirements.txt
+│
+├── agents/
+│   ├── validator.py            ← CSV cleaning + type detection
+│   ├── planner.py              ← LLM-based analysis planning
+│   ├── stats_agent.py          ← Descriptive statistics
+│   ├── trend_agent.py          ← Time series + trend direction
+│   ├── anomaly_agent.py        ← Isolation Forest + Z-score
+│   ├── correlation_agent.py    ← Correlation matrix + top pairs
+│   ├── visualization_agent.py  ← 5 Plotly charts → PNG
+│   ├── narrator_agent.py       ← Executive summary (Gemini)
+│   ├── recommendation_agent.py ← Strategic actions (Gemini)
+│   └── compiler_agent.py       ← PDF + PowerPoint + Email
+│
+├── graph/
+│   └── workflow.py             ← LangGraph StateGraph pipeline
+│
+├── models/
+│   └── state.py                ← Shared ReportState TypedDict
+│
+├── utils/
+│   ├── llm.py                  ← Gemini wrapper
+│   └── email_sender.py         ← Resend / Gmail SMTP
+│
+└── outputs/
+    ├── charts/                 ← Generated PNG charts
+    ├── reports/                ← Generated PDF files
+    └── presentations/          ← Generated PPTX files
 ```
 
-## Setup
+---
 
-### 1. Install Ollama (local LLM — free)
+## Getting Started
+
+### 1. Clone the repo
 ```bash
-# Download from https://ollama.com
-ollama pull llama3.1
-ollama serve
+git clone https://github.com/spicynick111/multi.git
+cd multi
 ```
 
-### 2. Install Python dependencies
+### 2. Install dependencies
 ```bash
-cd business-report-agent
 pip install -r requirements.txt
 ```
 
-### 3. Run the app
+### 3. Get a free Gemini API key
+- Go to [aistudio.google.com](https://aistudio.google.com)
+- Click **Get API Key** → Create key → Copy it
+
+### 4. Configure secrets
+Create `.streamlit/secrets.toml`:
+```toml
+GEMINI_API_KEY = "your-gemini-api-key-here"
+
+# Optional: for email sending
+RESEND_API_KEY = "re_xxxxxxxxxxxx"   # free at resend.com
+```
+
+### 5. Run the app
 ```bash
 streamlit run app.py
 ```
 
-Open `http://localhost:8501` in your browser.
+Open [http://localhost:8501](http://localhost:8501) → Upload any CSV → Done.
 
-## Usage
+---
 
-1. Upload any CSV file (sales, analytics, finance, survey data)
-2. Select your Ollama model in the sidebar
-3. Watch the 7 agents run live
-4. Download your PDF report, PowerPoint deck, and email draft
+## Email Sending (Optional)
 
-## Tech Stack
+To enable the **Send Report** feature (sends PDF + PPTX to any inbox):
 
-| Component | Tool |
-|-----------|------|
-| Orchestration | LangGraph |
-| LLM | Ollama (Llama 3.1 / Mistral / Phi-3) |
-| Data Analysis | Pandas · SciPy · scikit-learn |
-| Charts | Plotly + Kaleido |
-| PDF | fpdf2 |
-| PowerPoint | python-pptx |
-| UI | Streamlit |
+**Option A — Resend** *(recommended, proper no-reply sender)*
+1. Sign up free at [resend.com](https://resend.com)
+2. Create an API Key
+3. Add to `secrets.toml`: `RESEND_API_KEY = "re_..."`
 
-## Cost
+**Option B — Gmail SMTP**
+1. Create a dedicated Gmail (e.g. `reportai.noreply@gmail.com`)
+2. Get a 16-char App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+3. Add to `secrets.toml`:
+```toml
+SENDER_EMAIL        = "reportai.noreply@gmail.com"
+SENDER_APP_PASSWORD = "abcd efgh ijkl mnop"
+```
 
-**$0** — All models run locally via Ollama. No OpenAI, no Anthropic, no cloud LLM.
+---
 
-## Output Files
+## Deploying to Streamlit Community Cloud
 
-Generated files are saved to:
-- `outputs/reports/` — PDF report
-- `outputs/presentations/` — PowerPoint deck
-- `outputs/charts/` — Individual chart PNGs
+1. Push this repo to GitHub
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app**
+3. Select this repo → `app.py`
+4. **Advanced settings → Secrets** → paste your `secrets.toml` content
+5. Deploy — your app gets a public URL in ~2 minutes
+
+---
+
+## LangGraph Pipeline
+
+```
+START
+  │
+  ▼
+validator ──► planner ──► analyses (stats + trend + anomaly + correlation)
+                                │
+                                ▼
+                         visualization ──► narrator ──► recommendation ──► compiler
+                                                                               │
+                                                                              END
+                                                                    (PDF + PPT + Email)
+```
+
+Results are cached in `st.session_state` — the graph runs **once per file upload**, never on tab clicks or theme toggles.
+
+---
+
+## Contributing
+
+Pull requests are welcome. For major changes, open an issue first.
+
+---
+
+## License
+
+MIT License — free to use, modify, and distribute.
+
+---
+
+<p align="center">Built with LangGraph · Gemini · Streamlit</p>
