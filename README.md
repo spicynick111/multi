@@ -2,6 +2,8 @@
 
 > Upload any CSV → 7 AI agents analyse it → Get a full **PDF Report + PowerPoint Deck + Email Draft** in under 2 minutes.
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-autonomous--report--agent.streamlit.app-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://autonomous-report-agent.streamlit.app/)
+
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat&logo=python&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-0.2+-1C3C3C?style=flat&logo=langchain&logoColor=white)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.38+-FF4B4B?style=flat&logo=streamlit&logoColor=white)
